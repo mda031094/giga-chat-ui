@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 const DEFAULT_OAUTH_URL = 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth';
 const DEFAULT_API_BASE_URL = 'https://gigachat.devices.sberbank.ru/api/v1';
 
@@ -89,7 +91,7 @@ export async function handleAuthLogin(request, response) {
         Accept: 'application/json',
         Authorization: `Basic ${credentials}`,
         'Content-Type': 'application/x-www-form-urlencoded',
-        RqUID: crypto.randomUUID(),
+        RqUID: randomUUID(),
       },
       body: new URLSearchParams({ scope }).toString(),
     });

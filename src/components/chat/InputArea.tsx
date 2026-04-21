@@ -2,14 +2,15 @@ import { KeyboardEvent, useRef, useState } from 'react';
 import { ErrorMessage } from '../feedback/ErrorMessage';
 
 type InputAreaProps = {
+  error?: string | null;
   isLoading?: boolean;
-  onSubmit: (value: string) => void;
+  onSubmit: (value: string) => Promise<void>;
   onStop?: () => void;
 };
 
-export function InputArea({ isLoading = false, onStop, onSubmit }: InputAreaProps) {
+export function InputArea({ error = null, isLoading = false, onStop, onSubmit }: InputAreaProps) {
   const [value, setValue] = useState('');
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const canSubmit = value.trim().length > 0 && !isLoading;
 
@@ -26,15 +27,16 @@ export function InputArea({ isLoading = false, onStop, onSubmit }: InputAreaProp
   const handleSubmit = () => {
     if (!canSubmit) {
       if (!isLoading) {
-        setError('Введите сообщение перед отправкой.');
+        setLocalError('Введите сообщение перед отправкой.');
       }
       return;
     }
 
-    setError('');
-    onSubmit(value.trim());
-    setValue('');
-    window.requestAnimationFrame(resizeTextarea);
+    setLocalError('');
+    void onSubmit(value.trim()).then(() => {
+      setValue('');
+      window.requestAnimationFrame(resizeTextarea);
+    });
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -52,7 +54,8 @@ export function InputArea({ isLoading = false, onStop, onSubmit }: InputAreaProp
         handleSubmit();
       }}
     >
-      {error ? <ErrorMessage text={error} /> : null}
+      {localError ? <ErrorMessage text={localError} /> : null}
+      {!localError && error ? <ErrorMessage text={error} /> : null}
       <div className="composer">
         <button type="button" className="icon-button muted-button" aria-label="Прикрепить изображение" disabled={isLoading}>
           📎
@@ -65,7 +68,7 @@ export function InputArea({ isLoading = false, onStop, onSubmit }: InputAreaProp
           placeholder="Спросите что-нибудь..."
           onChange={(event) => {
             setValue(event.target.value);
-            setError('');
+            setLocalError('');
             resizeTextarea();
           }}
           onKeyDown={handleKeyDown}

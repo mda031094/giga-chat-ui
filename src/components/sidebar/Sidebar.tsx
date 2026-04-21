@@ -1,17 +1,29 @@
 import { useMemo, useState } from 'react';
-import type { ChatPreview } from '../../types';
+import type { Chat } from '../../types';
 import { ChatList } from './ChatList';
 import { SearchInput } from './SearchInput';
 
 type SidebarProps = {
-  activeChatId: string;
-  chats: ChatPreview[];
+  activeChatId: string | null;
+  chats: Chat[];
   isOpen: boolean;
+  onChatCreate: () => void;
+  onChatDelete: (chatId: string) => void;
+  onChatRename: (chatId: string) => void;
   onChatSelect: (chatId: string) => void;
   onClose: () => void;
 };
 
-export function Sidebar({ activeChatId, chats, isOpen, onChatSelect, onClose }: SidebarProps) {
+export function Sidebar({
+  activeChatId,
+  chats,
+  isOpen,
+  onChatCreate,
+  onChatDelete,
+  onChatRename,
+  onChatSelect,
+  onClose,
+}: SidebarProps) {
   const [query, setQuery] = useState('');
 
   const filteredChats = useMemo(() => {
@@ -20,14 +32,17 @@ export function Sidebar({ activeChatId, chats, isOpen, onChatSelect, onClose }: 
       return chats;
     }
 
-    return chats.filter((chat) => chat.title.toLowerCase().includes(normalizedQuery));
+    return chats.filter((chat) => {
+      const lastMessage = chat.messages[chat.messages.length - 1]?.content.toLowerCase() ?? '';
+      return chat.title.toLowerCase().includes(normalizedQuery) || lastMessage.includes(normalizedQuery);
+    });
   }, [chats, query]);
 
   return (
     <>
       <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-top">
-          <button className="new-chat-button" type="button">
+          <button className="new-chat-button" type="button" onClick={onChatCreate}>
             <span aria-hidden="true">+</span>
             Новый чат
           </button>
@@ -37,7 +52,13 @@ export function Sidebar({ activeChatId, chats, isOpen, onChatSelect, onClose }: 
         </div>
 
         <SearchInput value={query} onChange={setQuery} />
-        <ChatList chats={filteredChats} activeChatId={activeChatId} onChatSelect={onChatSelect} />
+        <ChatList
+          chats={filteredChats}
+          activeChatId={activeChatId}
+          onChatDelete={onChatDelete}
+          onChatRename={onChatRename}
+          onChatSelect={onChatSelect}
+        />
       </aside>
       {isOpen ? <button className="sidebar-backdrop" type="button" aria-label="Закрыть меню" onClick={onClose} /> : null}
     </>

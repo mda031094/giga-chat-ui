@@ -2,24 +2,36 @@ import { useState } from 'react';
 import { Sidebar } from '../sidebar/Sidebar';
 import { ChatWindow } from '../chat/ChatWindow';
 import { SettingsPanel } from '../settings/SettingsPanel';
-import type { ChatMessage, ChatPreview, ThemeMode } from '../../types';
+import type { Chat, ThemeMode } from '../../types';
 
 type AppLayoutProps = {
-  activeChatId: string;
-  chats: ChatPreview[];
-  messages: ChatMessage[];
+  activeChat: Chat | null;
+  activeChatId: string | null;
+  chats: Chat[];
+  error: string | null;
+  isLoading: boolean;
+  onChatCreate: () => void;
+  onChatDelete: (chatId: string) => void;
+  onChatRename: (chatId: string) => void;
   theme: ThemeMode;
-  title: string;
+  onMessageSubmit: (content: string) => Promise<void>;
+  onStopGeneration: () => void;
   onChatSelect: (chatId: string) => void;
   onThemeChange: (theme: ThemeMode) => void;
 };
 
 export function AppLayout({
+  activeChat,
   activeChatId,
   chats,
-  messages,
+  error,
+  isLoading,
+  onChatCreate,
+  onChatDelete,
+  onChatRename,
+  onMessageSubmit,
+  onStopGeneration,
   theme,
-  title,
   onChatSelect,
   onThemeChange,
 }: AppLayoutProps) {
@@ -41,14 +53,20 @@ export function AppLayout({
         activeChatId={activeChatId}
         chats={chats}
         isOpen={isSidebarOpen}
+        onChatCreate={onChatCreate}
+        onChatDelete={onChatDelete}
+        onChatRename={onChatRename}
         onChatSelect={handleChatSelect}
         onClose={() => setIsSidebarOpen(false)}
       />
 
       <ChatWindow
-        title={title}
-        initialMessages={messages}
+        activeChat={activeChat}
+        error={error}
+        isLoading={isLoading}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onStopGeneration={onStopGeneration}
+        onSubmit={onMessageSubmit}
       />
 
       <SettingsPanel

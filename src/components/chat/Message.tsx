@@ -10,6 +10,7 @@ type MessageProps = {
 const senderNames: Record<ChatRole, string> = {
   user: 'Вы',
   assistant: 'GigaChat',
+  system: 'Система',
 };
 
 export function Message({ message, variant }: MessageProps) {

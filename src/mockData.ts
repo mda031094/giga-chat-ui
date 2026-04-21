@@ -13,41 +13,41 @@ export const mockMessages: ChatMessage[] = [
   {
     id: 'm1',
     role: 'user',
-    senderName: 'Вы',
     content: 'Помоги спланировать оболочку приложения для чата с GigaChat.',
+    timestamp: Date.now() - 1000 * 60 * 12,
   },
   {
     id: 'm2',
     role: 'assistant',
-    senderName: 'GigaChat',
     content:
       'Конечно. Начнем с **основной структуры**: sidebar для истории, центральная область сообщений и нижняя зона ввода.',
+    timestamp: Date.now() - 1000 * 60 * 11,
   },
   {
     id: 'm3',
     role: 'user',
-    senderName: 'Вы',
     content: 'Какие компоненты стоит выделить на первом этапе?',
+    timestamp: Date.now() - 1000 * 60 * 9,
   },
   {
     id: 'm4',
     role: 'assistant',
-    senderName: 'GigaChat',
     content:
       'Минимальный набор:\n\n- `AppLayout`\n- `Sidebar`\n- `ChatWindow`\n- `MessageList`\n- `Message`\n- `InputArea`\n- `SettingsPanel`',
+    timestamp: Date.now() - 1000 * 60 * 8,
   },
   {
     id: 'm5',
     role: 'user',
-    senderName: 'Вы',
     content: 'Добавь пример блока кода, чтобы проверить markdown.',
+    timestamp: Date.now() - 1000 * 60 * 4,
   },
   {
     id: 'm6',
     role: 'assistant',
-    senderName: 'GigaChat',
     content:
       'Вот небольшой пример:\n\n```ts\nconst sendMessage = (text: string) => {\n  return text.trim().length > 0;\n};\n```\n\n*Позже* здесь появится реальная отправка запроса.',
+    timestamp: Date.now() - 1000 * 60 * 3,
   },
 ];
 

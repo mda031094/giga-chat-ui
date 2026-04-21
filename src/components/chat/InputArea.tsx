@@ -1,15 +1,16 @@
-import { FormEvent, KeyboardEvent, useRef, useState } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 import { ErrorMessage } from '../feedback/ErrorMessage';
 
 type InputAreaProps = {
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  isLoading?: boolean;
+  onSubmit: (value: string) => void;
 };
 
-export function InputArea({ onSubmit }: InputAreaProps) {
+export function InputArea({ isLoading = false, onSubmit }: InputAreaProps) {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const canSubmit = value.trim().length > 0;
+  const canSubmit = value.trim().length > 0 && !isLoading;
 
   const resizeTextarea = () => {
     const textarea = textareaRef.current;
@@ -21,15 +22,16 @@ export function InputArea({ onSubmit }: InputAreaProps) {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     if (!canSubmit) {
-      setError('Введите сообщение перед отправкой.');
+      if (!isLoading) {
+        setError('Введите сообщение перед отправкой.');
+      }
       return;
     }
 
     setError('');
-    onSubmit(event);
+    onSubmit(value.trim());
     setValue('');
     window.requestAnimationFrame(resizeTextarea);
   };
@@ -37,21 +39,28 @@ export function InputArea({ onSubmit }: InputAreaProps) {
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      event.currentTarget.form?.requestSubmit();
+      handleSubmit();
     }
   };
 
   return (
-    <form className="input-area" onSubmit={handleSubmit}>
+    <form
+      className="input-area"
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSubmit();
+      }}
+    >
       {error ? <ErrorMessage text={error} /> : null}
       <div className="composer">
-        <button type="button" className="icon-button muted-button" aria-label="Прикрепить изображение">
+        <button type="button" className="icon-button muted-button" aria-label="Прикрепить изображение" disabled={isLoading}>
           📎
         </button>
         <textarea
           ref={textareaRef}
           rows={1}
           value={value}
+          disabled={isLoading}
           placeholder="Спросите что-нибудь..."
           onChange={(event) => {
             setValue(event.target.value);
@@ -60,11 +69,11 @@ export function InputArea({ onSubmit }: InputAreaProps) {
           }}
           onKeyDown={handleKeyDown}
         />
-        <button type="button" className="secondary-button">
+        <button type="button" className="secondary-button" disabled>
           Стоп
         </button>
         <button type="submit" className="primary-button" disabled={!canSubmit}>
-          Отправить
+          {isLoading ? 'Ждем ответ...' : 'Отправить'}
         </button>
       </div>
     </form>

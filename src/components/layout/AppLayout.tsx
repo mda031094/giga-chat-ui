@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { Sidebar } from '../sidebar/Sidebar';
 import { ChatWindow } from '../chat/ChatWindow';
 import { SettingsPanel } from '../settings/SettingsPanel';
@@ -11,7 +11,6 @@ type AppLayoutProps = {
   theme: ThemeMode;
   title: string;
   onChatSelect: (chatId: string) => void;
-  onMessageSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onThemeChange: (theme: ThemeMode) => void;
 };
 
@@ -22,7 +21,6 @@ export function AppLayout({
   theme,
   title,
   onChatSelect,
-  onMessageSubmit,
   onThemeChange,
 }: AppLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -49,9 +47,8 @@ export function AppLayout({
 
       <ChatWindow
         title={title}
-        messages={messages}
+        initialMessages={messages}
         onOpenSettings={() => setIsSettingsOpen(true)}
-        onSubmit={onMessageSubmit}
       />
 
       <SettingsPanel

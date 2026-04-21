@@ -1,17 +1,72 @@
-import { FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChatMessage } from '../../types';
 import { EmptyState } from '../feedback/EmptyState';
 import { InputArea } from './InputArea';
 import { MessageList } from './MessageList';
 
 type ChatWindowProps = {
+  initialMessages: ChatMessage[];
   title: string;
-  messages: ChatMessage[];
   onOpenSettings: () => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-export function ChatWindow({ title, messages, onOpenSettings, onSubmit }: ChatWindowProps) {
+const assistantReplies = [
+  'Готово. Я добавил сообщение пользователя в состояние и показал ответ ассистента после короткой задержки.',
+  'Теперь интерфейс ощущается живее: сообщение уходит сразу, затем появляется индикатор печати и моковый ответ.',
+  'Автоскролл тоже можно завести на этот же поток обновлений, чтобы последнее сообщение всегда оставалось в поле зрения.',
+];
+
+export function ChatWindow({ initialMessages, title, onOpenSettings }: ChatWindowProps) {
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const [isLoading, setIsLoading] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    setMessages(initialMessages);
+    setIsLoading(false);
+
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, [initialMessages, title]);
+
+  useEffect(() => () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+  }, []);
+
+  const canShowEmptyState = useMemo(() => messages.length === 0 && !isLoading, [isLoading, messages.length]);
+
+  const handleSendMessage = (content: string) => {
+    const userMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'user',
+      content,
+      timestamp: Date.now(),
+    };
+
+    setMessages((currentMessages) => [...currentMessages, userMessage]);
+    setIsLoading(true);
+
+    const reply = assistantReplies[Math.floor(Math.random() * assistantReplies.length)];
+    const delay = 1000 + Math.floor(Math.random() * 1000);
+
+    timeoutRef.current = window.setTimeout(() => {
+      const assistantMessage: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: reply,
+        timestamp: Date.now(),
+      };
+
+      setMessages((currentMessages) => [...currentMessages, assistantMessage]);
+      setIsLoading(false);
+      timeoutRef.current = null;
+    }, delay);
+  };
+
   return (
     <section className="chat-window">
       <header className="chat-header">
@@ -24,9 +79,9 @@ export function ChatWindow({ title, messages, onOpenSettings, onSubmit }: ChatWi
         </button>
       </header>
 
-      {messages.length > 0 ? <MessageList messages={messages} isTyping /> : <EmptyState />}
+      {canShowEmptyState ? <EmptyState /> : <MessageList messages={messages} isTyping={isLoading} />}
 
-      <InputArea onSubmit={onSubmit} />
+      <InputArea isLoading={isLoading} onSubmit={handleSendMessage} />
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AppLayout } from './components/layout/AppLayout';
 import { AuthForm } from './components/auth/AuthForm';
 import { mockChats, mockMessages } from './mockData';
@@ -25,10 +25,6 @@ export function App() {
     setIsAuthorized(true);
   };
 
-  const handleMockSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   if (!isAuthorized) {
     return <AuthForm error={authError} onSubmit={handleLogin} theme={theme} onThemeChange={setTheme} />;
   }
@@ -41,7 +37,6 @@ export function App() {
       theme={theme}
       title={activeChatTitle}
       onChatSelect={setActiveChatId}
-      onMessageSubmit={handleMockSubmit}
       onThemeChange={setTheme}
     />
   );

@@ -334,6 +334,12 @@ p {
   font-weight: 600;
 }
 
+.message-time {
+  margin-left: 6px;
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
 .copy-button {
   color: var(--color-muted);
   border: 0;

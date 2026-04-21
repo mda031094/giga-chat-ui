@@ -13,8 +13,8 @@ export type ChatPreview = {
 export type ChatMessage = {
   id: string;
   role: ChatRole;
-  senderName: string;
   content: string;
+  timestamp: number;
 };
 
 export type SettingsValues = {

@@ -26,6 +26,15 @@ export function Sidebar({
 }: SidebarProps) {
   const [query, setQuery] = useState('');
 
+  const handleDeleteChat = (chatId: string) => {
+    const confirmed = window.confirm('Удалить этот чат?');
+    if (!confirmed) {
+      return;
+    }
+
+    onChatDelete(chatId);
+  };
+
   const filteredChats = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) {
@@ -55,7 +64,7 @@ export function Sidebar({
         <ChatList
           chats={filteredChats}
           activeChatId={activeChatId}
-          onChatDelete={onChatDelete}
+          onChatDelete={handleDeleteChat}
           onChatRename={onChatRename}
           onChatSelect={onChatSelect}
         />

@@ -17,9 +17,9 @@ export function ChatList({ activeChatId, chats, onChatDelete, onChatRename, onCh
           key={chat.id}
           chat={chat}
           isActive={activeChatId === chat.id}
-          onDelete={() => onChatDelete(chat.id)}
-          onRename={() => onChatRename(chat.id)}
-          onSelect={() => onChatSelect(chat.id)}
+          onDelete={onChatDelete}
+          onRename={onChatRename}
+          onSelect={onChatSelect}
         />
       ))}
     </nav>

@@ -2,13 +2,12 @@ import { KeyboardEvent, useRef, useState } from 'react';
 import { ErrorMessage } from '../feedback/ErrorMessage';
 
 type InputAreaProps = {
-  error?: string | null;
   isLoading?: boolean;
   onSubmit: (value: string) => Promise<void>;
   onStop?: () => void;
 };
 
-export function InputArea({ error = null, isLoading = false, onStop, onSubmit }: InputAreaProps) {
+export function InputArea({ isLoading = false, onStop, onSubmit }: InputAreaProps) {
   const [value, setValue] = useState('');
   const [localError, setLocalError] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -55,7 +54,6 @@ export function InputArea({ error = null, isLoading = false, onStop, onSubmit }:
       }}
     >
       {localError ? <ErrorMessage text={localError} /> : null}
-      {!localError && error ? <ErrorMessage text={error} /> : null}
       <div className="composer">
         <button type="button" className="icon-button muted-button" aria-label="Прикрепить изображение" disabled={isLoading}>
           📎

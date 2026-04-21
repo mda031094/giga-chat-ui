@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { Chat } from '../../types';
 import { ChatList } from './ChatList';
 import { SearchInput } from './SearchInput';
@@ -26,14 +26,14 @@ export function Sidebar({
 }: SidebarProps) {
   const [query, setQuery] = useState('');
 
-  const handleDeleteChat = (chatId: string) => {
+  const handleDeleteChat = useCallback((chatId: string) => {
     const confirmed = window.confirm('Удалить этот чат?');
     if (!confirmed) {
       return;
     }
 
     onChatDelete(chatId);
-  };
+  }, [onChatDelete]);
 
   const filteredChats = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();

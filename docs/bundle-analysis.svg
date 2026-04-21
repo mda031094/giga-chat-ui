@@ -1,0 +1,74 @@
+<svg width="1400" height="820" viewBox="0 0 1400 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="820" rx="28" fill="#101826"/>
+  <text x="64" y="88" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700">
+    GigaChat UI Bundle Analysis
+  </text>
+  <text x="64" y="128" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="20">
+    Snapshot from Vite build + rollup visualizer. Route-level and component-level code splitting are enabled.
+  </text>
+
+  <rect x="64" y="172" width="1272" height="250" rx="20" fill="#162133" stroke="#23314B"/>
+  <text x="96" y="214" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">
+    Largest production chunks
+  </text>
+
+  <text x="96" y="272" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="18">index main</text>
+  <rect x="260" y="250" width="950" height="26" rx="13" fill="#1E293B"/>
+  <rect x="260" y="250" width="950" height="26" rx="13" fill="#3B82F6"/>
+  <text x="1230" y="270" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="18">190.0 kB</text>
+
+  <text x="96" y="320" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="18">AppLayout</text>
+  <rect x="260" y="298" width="950" height="26" rx="13" fill="#1E293B"/>
+  <rect x="260" y="298" width="619" height="26" rx="13" fill="#22C55E"/>
+  <text x="899" y="318" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="18">123.7 kB</text>
+
+  <text x="96" y="368" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="18">Sidebar</text>
+  <rect x="260" y="346" width="950" height="26" rx="13" fill="#1E293B"/>
+  <rect x="260" y="346" width="13" height="26" rx="13" fill="#F59E0B"/>
+  <text x="293" y="366" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="18">2.7 kB</text>
+
+  <text x="96" y="416" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="18">SettingsPanel</text>
+  <rect x="260" y="394" width="950" height="26" rx="13" fill="#1E293B"/>
+  <rect x="260" y="394" width="12" height="26" rx="13" fill="#A855F7"/>
+  <text x="292" y="414" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="18">2.5 kB</text>
+
+  <rect x="64" y="458" width="615" height="298" rx="20" fill="#162133" stroke="#23314B"/>
+  <text x="96" y="502" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">
+    Main chunk contents
+  </text>
+  <text x="96" y="548" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • React + React DOM runtime
+  </text>
+  <text x="96" y="586" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • React Router and app bootstrap
+  </text>
+  <text x="96" y="624" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • Chat provider, reducer, storage helpers
+  </text>
+  <text x="96" y="662" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • API client and global routing shell
+  </text>
+  <text x="96" y="714" fill="#60A5FA" font-family="Inter, Arial, sans-serif" font-size="18">
+    react-markdown is not bundled into the startup chunk.
+  </text>
+
+  <rect x="721" y="458" width="615" height="298" rx="20" fill="#162133" stroke="#23314B"/>
+  <text x="753" y="502" fill="#E2E8F0" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">
+    Lazy-loaded pieces
+  </text>
+  <text x="753" y="548" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • AuthPage, HomePage, ChatPage route wrappers
+  </text>
+  <text x="753" y="586" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • Sidebar chunk
+  </text>
+  <text x="753" y="624" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • SettingsPanel chunk
+  </text>
+  <text x="753" y="662" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">
+    • AppLayout chunk carries Message + react-markdown tree
+  </text>
+  <text x="753" y="714" fill="#22C55E" font-family="Inter, Arial, sans-serif" font-size="18">
+    This keeps the initial route shell smaller and defers chat-heavy parsing code.
+  </text>
+</svg>

@@ -3,6 +3,9 @@ import { ErrorMessage } from '../feedback/ErrorMessage';
 import { Toggle } from '../ui/Toggle';
 import type { ChatScope, ThemeMode } from '../../types';
 
+const useServerAuth = import.meta.env.VITE_USE_SERVER_AUTH === 'true';
+const defaultScope = (import.meta.env.VITE_GIGACHAT_SCOPE as ChatScope | undefined) ?? 'GIGACHAT_API_PERS';
+
 type AuthFormProps = {
   error: string;
   theme: ThemeMode;
@@ -14,7 +17,7 @@ const scopes: ChatScope[] = ['GIGACHAT_API_PERS', 'GIGACHAT_API_B2B', 'GIGACHAT_
 
 export function AuthForm({ error, theme, onSubmit, onThemeChange }: AuthFormProps) {
   const [credentials, setCredentials] = useState('');
-  const [scope, setScope] = useState<ChatScope>('GIGACHAT_API_PERS');
+  const [scope, setScope] = useState<ChatScope>(defaultScope);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,19 +31,27 @@ export function AuthForm({ error, theme, onSubmit, onThemeChange }: AuthFormProp
           <span className="brand-mark">G</span>
           <div>
             <h1>Вход в GigaChat UI</h1>
-            <p>Введите Credentials и выберите scope для будущей интеграции.</p>
+            <p>
+              {useServerAuth
+                ? 'Серверный ключ уже настроен. Остается только войти.'
+                : 'Введите Credentials и выберите scope для будущей интеграции.'}
+            </p>
           </div>
         </div>
 
-        <label className="field">
-          <span>Credentials</span>
-          <input
-            type="password"
-            value={credentials}
-            placeholder="Base64-строка"
-            onChange={(event) => setCredentials(event.target.value)}
-          />
-        </label>
+        {useServerAuth ? (
+          <div className="auth-hint">Authorization Key подключен через серверные переменные окружения.</div>
+        ) : (
+          <label className="field">
+            <span>Credentials</span>
+            <input
+              type="password"
+              value={credentials}
+              placeholder="Base64-строка"
+              onChange={(event) => setCredentials(event.target.value)}
+            />
+          </label>
+        )}
 
         <fieldset className="scope-group">
           <legend>Scope</legend>

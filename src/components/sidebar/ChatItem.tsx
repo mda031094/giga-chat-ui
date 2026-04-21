@@ -1,14 +1,15 @@
+import { memo } from 'react';
 import type { Chat } from '../../types';
 
 type ChatItemProps = {
   chat: Chat;
   isActive: boolean;
-  onDelete: () => void;
-  onRename: () => void;
-  onSelect: () => void;
+  onDelete: (chatId: string) => void;
+  onRename: (chatId: string) => void;
+  onSelect: (chatId: string) => void;
 };
 
-export function ChatItem({ chat, isActive, onDelete, onRename, onSelect }: ChatItemProps) {
+function ChatItemComponent({ chat, isActive, onDelete, onRename, onSelect }: ChatItemProps) {
   const formattedDate = new Intl.DateTimeFormat('ru-RU', {
     day: 'numeric',
     month: 'short',
@@ -16,7 +17,7 @@ export function ChatItem({ chat, isActive, onDelete, onRename, onSelect }: ChatI
   const lastMessage = chat.messages[chat.messages.length - 1]?.content ?? 'Сообщений пока нет';
 
   return (
-    <button type="button" className={`chat-item ${isActive ? 'chat-item-active' : ''}`} onClick={onSelect}>
+    <button type="button" className={`chat-item ${isActive ? 'chat-item-active' : ''}`} onClick={() => onSelect(chat.id)}>
       <span className="chat-item-copy">
         <span className="chat-title">{chat.title}</span>
         <span className="chat-date">{formattedDate}</span>
@@ -29,7 +30,7 @@ export function ChatItem({ chat, isActive, onDelete, onRename, onSelect }: ChatI
           aria-label="Переименовать чат"
           onClick={(event) => {
             event.stopPropagation();
-            onRename();
+            onRename(chat.id);
           }}
         >
           ✎
@@ -40,7 +41,7 @@ export function ChatItem({ chat, isActive, onDelete, onRename, onSelect }: ChatI
           aria-label="Удалить чат"
           onClick={(event) => {
             event.stopPropagation();
-            onDelete();
+            onDelete(chat.id);
           }}
         >
           ×
@@ -49,3 +50,5 @@ export function ChatItem({ chat, isActive, onDelete, onRename, onSelect }: ChatI
     </button>
   );
 }
+
+export const ChatItem = memo(ChatItemComponent);

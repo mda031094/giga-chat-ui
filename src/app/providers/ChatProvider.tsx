@@ -14,6 +14,8 @@ import type { Chat, ChatMessage, ChatScope, ChatState, ThemeMode } from '../../t
 import { chatReducer, createChatTitle, createNewChat, type ChatAction } from '../../store/chatReducer';
 import { createEmptyPersistedState, loadPersistedState, savePersistedState } from '../../utils/storage';
 
+const canUseServerAuth = import.meta.env.VITE_USE_SERVER_AUTH === 'true';
+
 type ChatContextValue = {
   state: ChatState;
   actions: {
@@ -135,7 +137,7 @@ export function ChatProvider({ children }: PropsWithChildren) {
       return state.auth.accessToken;
     }
 
-    if (!state.auth.credentials) {
+    if (!state.auth.credentials && !canUseServerAuth) {
       throw new Error('Сначала выполните авторизацию в GigaChat.');
     }
 

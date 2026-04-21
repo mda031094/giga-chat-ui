@@ -1,4 +1,5 @@
 import type { Chat } from '../../types';
+import { ErrorBoundary } from '../ErrorBoundary';
 import { EmptyState } from '../feedback/EmptyState';
 import { ErrorMessage } from '../feedback/ErrorMessage';
 import { InputArea } from './InputArea';
@@ -27,12 +28,15 @@ export function ChatWindow({ activeChat, error, isLoading, onOpenSettings, onSto
       </header>
 
       {activeChat?.messages.length ? (
-        <MessageList messages={activeChat.messages} isTyping={isLoading} />
+        <ErrorBoundary fallbackText="Сообщения временно не отрисовались. Попробуйте еще раз." resetKey={activeChat.id}>
+          <MessageList messages={activeChat.messages} isTyping={isLoading} />
+        </ErrorBoundary>
       ) : (
         <EmptyState />
       )}
 
-      <InputArea error={error} isLoading={isLoading} onStop={onStopGeneration} onSubmit={onSubmit} />
+      {error ? <ErrorMessage text={error} /> : null}
+      <InputArea isLoading={isLoading} onStop={onStopGeneration} onSubmit={onSubmit} />
     </section>
   );
 }

@@ -66,6 +66,14 @@ button:disabled {
   overflow: hidden;
 }
 
+.route-fallback {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  color: var(--color-muted);
+  background: var(--color-bg);
+}
+
 .sidebar {
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
@@ -74,6 +82,10 @@ button:disabled {
   border-right: 1px solid var(--color-border);
   background: var(--color-surface);
   z-index: 30;
+}
+
+.sidebar-skeleton {
+  visibility: hidden;
 }
 
 .sidebar-top,
@@ -495,6 +507,24 @@ p {
   margin: 0;
 }
 
+.error-message-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.error-action-button {
+  width: fit-content;
+  padding: 0;
+  color: var(--color-danger);
+  border: 0;
+  background: transparent;
+  font-weight: 600;
+}
+
+.message-fallback {
+  padding: 24px;
+}
+
 .empty-state {
   display: grid;
   place-items: center;
@@ -674,6 +704,14 @@ p {
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+}
+
+.auth-hint {
+  padding: 12px;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-alt);
 }
 
 .scope-group legend {

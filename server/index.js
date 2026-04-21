@@ -22,7 +22,7 @@ app.post('/api/chat/completions', handleChatCompletions);
 
 app.use(express.static(distPath));
 
-app.get('*', (request, response, next) => {
+app.use((request, response, next) => {
   if (request.path.startsWith('/api/')) {
     next();
     return;

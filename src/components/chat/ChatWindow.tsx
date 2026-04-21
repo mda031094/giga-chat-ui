@@ -67,6 +67,15 @@ export function ChatWindow({ initialMessages, title, onOpenSettings }: ChatWindo
     }, delay);
   };
 
+  const handleStopGeneration = () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <section className="chat-window">
       <header className="chat-header">
@@ -81,7 +90,7 @@ export function ChatWindow({ initialMessages, title, onOpenSettings }: ChatWindo
 
       {canShowEmptyState ? <EmptyState /> : <MessageList messages={messages} isTyping={isLoading} />}
 
-      <InputArea isLoading={isLoading} onSubmit={handleSendMessage} />
+      <InputArea isLoading={isLoading} onStop={handleStopGeneration} onSubmit={handleSendMessage} />
     </section>
   );
 }

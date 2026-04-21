@@ -11,45 +11,19 @@
   --sidebar-width: 312px;
 }
 
-[data-theme="light"] {
-  --color-bg: #f6f7f8;
-  --color-surface: #ffffff;
-  --color-surface-alt: #eef2f5;
-  --color-text: #202427;
-  --color-muted: #66717c;
-  --color-border: #dce2e8;
-  --color-primary: #198754;
-  --color-primary-hover: #146c43;
-  --color-primary-contrast: #ffffff;
-  --color-user-message: #dff5e8;
-  --color-assistant-message: #ffffff;
-  --color-danger: #c93a3a;
-  --shadow-soft: 0 18px 45px rgb(31 41 55 / 14%);
-}
-
-[data-theme="dark"] {
-  --color-bg: #111313;
-  --color-surface: #1b1f1e;
-  --color-surface-alt: #242a28;
-  --color-text: #f1f4f2;
-  --color-muted: #a9b4af;
-  --color-border: #333c38;
-  --color-primary: #2fbf71;
-  --color-primary-hover: #43d383;
-  --color-primary-contrast: #08110c;
-  --color-user-message: #1f4f39;
-  --color-assistant-message: #202624;
-  --color-danger: #ff7272;
-  --shadow-soft: 0 18px 45px rgb(0 0 0 / 34%);
-}
-
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
   min-width: 320px;
+  background: var(--color-bg);
+}
+
+#root {
+  min-height: 100vh;
 }
 
 button,
@@ -341,15 +315,24 @@ p {
 }
 
 .copy-button {
+  min-width: 110px;
+  min-height: 32px;
   color: var(--color-muted);
   border: 0;
+  border-radius: var(--radius-sm);
   background: transparent;
   opacity: 0;
   transition: opacity 160ms ease;
 }
 
-.message-bubble:hover .copy-button {
+.message-bubble:hover .copy-button,
+.message-bubble:focus-within .copy-button,
+.copy-button-active {
   opacity: 1;
+}
+
+.copy-button-active {
+  color: var(--color-primary);
 }
 
 .markdown-body {
@@ -462,6 +445,10 @@ p {
   min-width: 44px;
 }
 
+.stop-button {
+  min-width: 110px;
+}
+
 .error-message {
   display: flex;
   gap: 10px;
@@ -558,6 +545,64 @@ p {
   align-items: center;
   gap: 8px;
   color: var(--color-muted);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+}
+
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-flex;
+  width: 48px;
+  height: 28px;
+  align-items: center;
+  flex: 0 0 48px;
+  padding: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.toggle-track::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 18%);
+  transition: transform 160ms ease;
+}
+
+.toggle-input:checked + .toggle-track {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary), var(--color-surface-alt) 30%);
+}
+
+.toggle-input:checked + .toggle-track::after {
+  transform: translateX(20px);
+}
+
+.toggle-input:focus-visible + .toggle-track {
+  outline: 2px solid color-mix(in srgb, var(--color-primary), transparent 40%);
+  outline-offset: 2px;
+}
+
+.toggle-label {
+  font-size: 14px;
 }
 
 .settings-toggle {
@@ -690,7 +735,7 @@ p {
 
   .composer {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
   }
 
   .composer textarea {
@@ -705,7 +750,16 @@ p {
   }
 
   .composer .primary-button {
-    grid-column: 2;
+    grid-column: 2 / 4;
+  }
+
+  .composer .stop-button {
+    grid-column: 2 / 4;
+  }
+
+  .copy-button {
+    opacity: 1;
+    min-width: 98px;
   }
 
   .auth-actions,

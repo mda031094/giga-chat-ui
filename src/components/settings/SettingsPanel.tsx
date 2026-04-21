@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { defaultSettings } from '../../mockData';
+import { Toggle } from '../ui/Toggle';
 import type { SettingsValues, ThemeMode } from '../../types';
 
 type SettingsPanelProps = {
@@ -94,14 +95,12 @@ export function SettingsPanel({ isOpen, theme, onClose, onThemeChange }: Setting
           />
         </label>
 
-        <label className="theme-toggle settings-toggle">
-          <input
-            type="checkbox"
-            checked={theme === 'dark'}
-            onChange={(event) => handleThemeChange(event.target.checked ? 'dark' : 'light')}
-          />
-          <span>Темная тема</span>
-        </label>
+        <Toggle
+          checked={theme === 'dark'}
+          className="settings-toggle"
+          label="Темная тема"
+          onChange={(checked) => handleThemeChange(checked ? 'dark' : 'light')}
+        />
 
         <div className="settings-actions">
           <button type="button" className="secondary-button" onClick={handleReset}>

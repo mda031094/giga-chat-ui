@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AppLayout } from './components/layout/AppLayout';
 import { AuthForm } from './components/auth/AuthForm';
 import { mockChats, mockMessages } from './mockData';
@@ -14,6 +14,10 @@ export function App() {
     () => mockChats.find((chat) => chat.id === activeChatId)?.title ?? 'Новый чат',
     [activeChatId],
   );
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   const handleLogin = (credentials: string, _scope: ChatScope) => {
     if (!credentials.trim()) {

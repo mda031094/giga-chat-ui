@@ -4,9 +4,10 @@ import { ErrorMessage } from '../feedback/ErrorMessage';
 type InputAreaProps = {
   isLoading?: boolean;
   onSubmit: (value: string) => void;
+  onStop?: () => void;
 };
 
-export function InputArea({ isLoading = false, onSubmit }: InputAreaProps) {
+export function InputArea({ isLoading = false, onStop, onSubmit }: InputAreaProps) {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -69,12 +70,15 @@ export function InputArea({ isLoading = false, onSubmit }: InputAreaProps) {
           }}
           onKeyDown={handleKeyDown}
         />
-        <button type="button" className="secondary-button" disabled>
-          Стоп
-        </button>
-        <button type="submit" className="primary-button" disabled={!canSubmit}>
-          {isLoading ? 'Ждем ответ...' : 'Отправить'}
-        </button>
+        {isLoading ? (
+          <button type="button" className="secondary-button stop-button" onClick={onStop}>
+            Стоп
+          </button>
+        ) : (
+          <button type="submit" className="primary-button" disabled={!canSubmit}>
+            Отправить
+          </button>
+        )}
       </div>
     </form>
   );

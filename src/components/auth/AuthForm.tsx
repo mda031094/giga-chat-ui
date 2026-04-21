@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { ErrorMessage } from '../feedback/ErrorMessage';
+import { Toggle } from '../ui/Toggle';
 import type { ChatScope, ThemeMode } from '../../types';
 
 type AuthFormProps = {
@@ -21,7 +22,7 @@ export function AuthForm({ error, theme, onSubmit, onThemeChange }: AuthFormProp
   };
 
   return (
-    <main className="auth-page" data-theme={theme}>
+    <main className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
         <div className="auth-header">
           <span className="brand-mark">G</span>
@@ -60,14 +61,7 @@ export function AuthForm({ error, theme, onSubmit, onThemeChange }: AuthFormProp
         {error ? <ErrorMessage text={error} /> : null}
 
         <div className="auth-actions">
-          <label className="theme-toggle">
-            <input
-              type="checkbox"
-              checked={theme === 'dark'}
-              onChange={(event) => onThemeChange(event.target.checked ? 'dark' : 'light')}
-            />
-            <span>Темная тема</span>
-          </label>
+          <Toggle checked={theme === 'dark'} label="Темная тема" onChange={(checked) => onThemeChange(checked ? 'dark' : 'light')} />
           <button type="submit" className="primary-button">
             Войти
           </button>

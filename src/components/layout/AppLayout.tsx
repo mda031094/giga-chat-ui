@@ -32,7 +32,7 @@ export function AppLayout({
   };
 
   return (
-    <div className="app-shell" data-theme={theme}>
+    <div className="app-shell">
       <button className="burger-button" type="button" onClick={() => setIsSidebarOpen(true)} aria-label="Открыть меню">
         ☰
       </button>

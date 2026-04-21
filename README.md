@@ -4,7 +4,7 @@
 
 ## Демо
 
-- Публичное приложение: `будет добавлено после завершения деплоя`
+- Публичное приложение: [giga-chat-ui-production.up.railway.app](https://giga-chat-ui-production.up.railway.app/)
 - Bundle analysis: [docs/bundle-analysis.html](./docs/bundle-analysis.html)
 - Скриншот анализа бандла:
 
@@ -88,7 +88,7 @@ http://127.0.0.1:5173/
 | `GIGACHAT_SCOPE` | backend / serverless | Scope для OAuth-запроса на сервере. |
 | `GIGACHAT_OAUTH_URL` | backend / serverless | OAuth endpoint GigaChat. |
 | `GIGACHAT_API_BASE_URL` | backend / serverless | Базовый URL REST API GigaChat. |
-| `GIGACHAT_INSECURE_TLS` | backend / serverless | Локальный dev-fix для TLS-цепочки. В production должен быть `false`. |
+| `GIGACHAT_INSECURE_TLS` | backend / serverless | Флаг для обхода проблем TLS-цепочки между хостингом и GigaChat. По умолчанию лучше `false`. |
 
 ## Локальный сценарий авторизации
 
@@ -134,8 +134,10 @@ npm run build:analyze
 
 ## Продакшн-деплой
 
-Проект подготовлен к деплою на Vercel:
+Приложение опубликовано на Railway:
 
-- добавлен [vercel.json](./vercel.json) для корректной работы маршрута `/chat/:id`;
-- backend proxy вынесен в serverless endpoints внутри `api/`;
-- секреты не хранятся в клиентском коде и могут быть переданы через env-переменные хостинга.
+- публичное демо: [giga-chat-ui-production.up.railway.app](https://giga-chat-ui-production.up.railway.app/)
+- frontend собирается через `vite build`, а Express-сервер отдает и статические файлы, и `/api` proxy;
+- для Railway добавлен [railway.json](./railway.json);
+- секреты передаются через переменные окружения хостинга, а не хранятся в коде;
+- для текущего Railway deployment включен временный workaround `GIGACHAT_INSECURE_TLS=true`, потому что без него запросы к GigaChat OAuth упирались в TLS-цепочку сертификатов.
